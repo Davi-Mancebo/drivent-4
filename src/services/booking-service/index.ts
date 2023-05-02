@@ -14,10 +14,11 @@ async function getRoomByUserId(id: number) {
   };
   return data;
 }
+
 async function createNewBooking(userId: number, roomId: number) {
   const booking = await bookingRepository.getBookingByUserId(userId);
   if (!booking) throw notFoundError();
-  
+
   const enrollments = await enrollmentRepository.findWithAddressByUserId(userId);
   const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollments.id);
   const room = await bookingRepository.getRoomByRoomId(roomId);
