@@ -9,7 +9,7 @@ export async function getRoomOfUser(req: AuthenticatedRequest, res: Response) {
   try {
     const data = await bookingService.getRoomByUserId(userId);
 
-    return res.send(data);
+    return res.status(httpStatus.OK).send(data);
   } catch (erro) {
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(erro.message);
   }
