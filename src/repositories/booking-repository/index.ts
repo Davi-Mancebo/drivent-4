@@ -14,7 +14,10 @@ async function getRoomsWithUsersByRoomId(roomId: number) {
 async function confirmRoom(bookingId: number, roomId: number) {
   return await prisma.booking.update({ where: { id: bookingId }, data: { roomId: roomId } });
 }
+async function updateRoom(roomId: number, id: number) {
+  return await prisma.booking.update({where: {id: id}, data: {roomId: roomId}})
+}
 
-const bookingRepository = { getBookingByUserId, getRoomByRoomId, getRoomsWithUsersByRoomId, confirmRoom };
+const bookingRepository = { getBookingByUserId, getRoomByRoomId, getRoomsWithUsersByRoomId, confirmRoom, updateRoom };
 
 export default bookingRepository;
