@@ -16,8 +16,9 @@ export async function getRoomOfUser(req: AuthenticatedRequest, res: Response) {
     }
 
     return res.status(httpStatus.OK).send(data);
-  } catch (erro) {
-    return res.status(httpStatus.NOT_FOUND).send(erro);
+  } catch (err) {
+    if(err.name === 'NotFoundError') return res.status(httpStatus.NOT_FOUND).send(err)
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err)
   }
 }
 
@@ -38,8 +39,8 @@ export async function createNewRoom(req: AuthenticatedRequest, res: Response) {
 
     return res.status(httpStatus.OK).send(data.id);
   } catch (err) {
-    return res.status(httpStatus.NOT_FOUND).send(err);
-  }
+    if(err.name === 'NotFoundError') return res.status(httpStatus.NOT_FOUND).send(err)
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err)  }
 }
 export async function updateRoom(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
@@ -53,8 +54,9 @@ export async function updateRoom(req: AuthenticatedRequest, res: Response) {
     const data = await bookingService.updateRoom(userId, roomId)
     if(!data) return res.sendStatus(403)
 
-    return res.status(httpStatus.OK).send(data.id)
+    return res.status(httpStatus.OK).send(bookingId)
   }catch(err){
-    return res.status(httpStatus.NOT_FOUND).send(err)
+    if(err.name === 'NotFoundError') return res.status(httpStatus.NOT_FOUND).send(err)
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err)
   }
 }
