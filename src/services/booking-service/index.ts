@@ -4,8 +4,10 @@ import enrollmentRepository from '@/repositories/enrollment-repository';
 import ticketsRepository from '@/repositories/tickets-repository';
 
 async function getRoomByUserId(id: number) {
-  const bookingData = await bookingRepository.getBookingByUserId(id);
-  if(!bookingData) throw notFoundError()
+  const enrollmentData = await enrollmentRepository.findWithAddressByUserId(id);
+  if(!enrollmentData) throw notFoundError()
+  
+  const bookingData = await bookingRepository.getBookingByUserId(id)
   const roomData = await bookingRepository.getRoomByRoomId(bookingData.roomId);
 
   const data = {

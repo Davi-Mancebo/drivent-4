@@ -8,7 +8,7 @@ export async function getRoomOfUser(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
   try {
     const data = await bookingService.getRoomByUserId(userId);
-    if (!data.id) {
+    if (!data) {
       throw notFoundError();
     }
 
