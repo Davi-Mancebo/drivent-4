@@ -22,11 +22,17 @@ export async function createNewRoom(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
   const { roomId } = req.body;
   try {
-    if (!roomId) throw notFoundError();
+    if (!roomId) {
+      throw notFoundError();
+    }
 
     const data = await bookingService.createNewBooking(userId, roomId);
-    if (data === null) return res.sendStatus(404);
-    if (data === false) return res.sendStatus(403);
+    if (data === null) {
+      return res.sendStatus(404);
+    }
+    if (data === false) {
+      return res.sendStatus(403);
+    }
 
     return res.status(httpStatus.OK).send(data);
   } catch (err) {
