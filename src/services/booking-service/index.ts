@@ -40,9 +40,6 @@ async function updateRoom(userId: number, roomId: number) {
   const booking = await bookingRepository.getBookingByUserId(userId);
   if (!booking) return false;
 
-  const room = await bookingRepository.getRoomByRoomId(roomId);
-  if (!room) throw notFoundError();
-
   const roomWithUser = await bookingRepository.getRoomsWithUsersByRoomId(roomId);
   if(roomWithUser[0].id) return false
 

@@ -52,9 +52,9 @@ export async function updateRoom(req: AuthenticatedRequest, res: Response) {
     if(!roomData) throw notFoundError()
     
     const data = await bookingService.updateRoom(userId, roomId)
-    if(!data) return res.sendStatus(403)
+    if(data === false) return res.sendStatus(403)
 
-    return res.status(httpStatus.OK).send(bookingId)
+    return res.status(httpStatus.OK).send({bookingId: data.id})
   }catch(err){
     if(err.name === 'NotFoundError') return res.status(httpStatus.NOT_FOUND).send(err)
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err)
