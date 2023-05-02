@@ -57,8 +57,7 @@ async function ticketProcessPayment(ticketId: number) {
     },
   });
 }
-
-export default {
+const ticketsRepository = {
   findTicketTypes,
   findTicketByEnrollmentId,
   createTicket,
@@ -66,3 +65,4 @@ export default {
   findTickeWithTypeById,
   ticketProcessPayment,
 };
+export default ticketsRepository
