@@ -5,7 +5,6 @@ import ticketsRepository from '@/repositories/tickets-repository';
 
 async function getRoomByUserId(id: number) {
   const bookingData = await bookingRepository.getBookingByUserId(id);
-  if (!bookingData) throw notFoundError();
   const roomData = await bookingRepository.getRoomByRoomId(bookingData.roomId);
 
   const data = {
@@ -17,7 +16,6 @@ async function getRoomByUserId(id: number) {
 
 async function createNewBooking(userId: number, roomId: number) {
   const booking = await bookingRepository.getBookingByUserId(userId);
-  if (!booking) throw notFoundError();
 
   const enrollments = await enrollmentRepository.findWithAddressByUserId(userId);
   const ticket = await ticketsRepository.findTicketByEnrollmentId(enrollments.id);
@@ -29,8 +27,8 @@ async function createNewBooking(userId: number, roomId: number) {
     ticket.TicketType.isRemote === true ||
     ticket.TicketType.includesHotel === false ||
     ticket.status === 'RESERVED'
-  ) return false;
-
+  )
+    return false;
 
   await bookingRepository.confirmRoom(booking.id, roomId);
 
