@@ -32,7 +32,7 @@ export async function createNewRoom(req: AuthenticatedRequest, res: Response) {
       return res.sendStatus(403);
     }
 
-    return res.status(httpStatus.OK).send(data);
+    return res.status(httpStatus.OK).send({bookingId: data.id});
   } catch (err) {
     return res.status(500).send(err.message);
   }
@@ -48,7 +48,7 @@ export async function updateRoom(req: AuthenticatedRequest, res: Response) {
     const data = await bookingService.updateRoom(userId, roomId)
     if(!data) return res.sendStatus(403)
 
-    return res.status(httpStatus.OK).send(data)
+    return res.status(httpStatus.OK).send({bookingId: data.id})
   }catch(err){
     return res.status(404).send(err.message)
   }
