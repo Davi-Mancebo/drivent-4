@@ -12,7 +12,16 @@ async function getRoomByUserId(id: number) {
     }
   return data;
 }
+async function createNewBooking(userId: number, roomId: number) {
+    const booking = await bookingRepository.getBookingByUserId(userId)
+    if(!booking) throw notFoundError()
+    const room = await bookingRepository.getRoomByRoomId(roomId)
 
-const bookingService = { getRoomByUserId };
+    if(!room) return false;
+
+    return booking.id;
+}
+
+const bookingService = { getRoomByUserId, createNewBooking };
 
 export default bookingService;
