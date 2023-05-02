@@ -38,7 +38,7 @@ export async function createNewRoom(req: AuthenticatedRequest, res: Response) {
 
     return res.status(httpStatus.OK).send(data.id);
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(httpStatus.NOT_FOUND).send(err);
   }
 }
 export async function updateRoom(req: AuthenticatedRequest, res: Response) {
