@@ -22,7 +22,8 @@ export async function createNewRoom(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
   const { roomId } = req.body;
   try {
-    if (!roomId) return res.sendStatus(httpStatus.NOT_FOUND)
+    const roomData = await bookingService.getByRoomId(roomId)
+    if(!roomData) throw notFoundError()
 
     const data = await bookingService.createNewBooking(userId, roomId);
     if (data === null) {
@@ -32,9 +33,9 @@ export async function createNewRoom(req: AuthenticatedRequest, res: Response) {
       return res.sendStatus(403);
     }
 
-    return res.status(httpStatus.OK).send({bookingId: data});
+    return res.status(httpStatus.OK).send(data.id);
   } catch (err) {
-    return res.status(500).send(err.message);
+    return res.status(500).send(err);
   }
 }
 export async function updateRoom(req: AuthenticatedRequest, res: Response) {
@@ -43,13 +44,14 @@ export async function updateRoom(req: AuthenticatedRequest, res: Response) {
   const { bookingId } = req.params;
 
   try{
-    if(!roomId) return res.sendStatus(httpStatus.NOT_FOUND)
+    const roomData = await bookingService.getByRoomId(roomId)
+    if(!roomData) throw notFoundError()
     
     const data = await bookingService.updateRoom(userId, roomId)
     if(!data) return res.sendStatus(403)
 
-    return res.status(httpStatus.OK).send({bookingId: data.id})
+    return res.status(httpStatus.OK).send(data.id)
   }catch(err){
-    return res.status(404).send(err.message)
+    return res.status(404).send(err)
   }
 }
