@@ -1,12 +1,15 @@
 import { notFoundError } from '@/errors';
 import { AuthenticatedRequest } from '@/middlewares';
 import bookingService from '@/services/booking-service';
+import enrollmentsService from '@/services/enrollments-service';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 
 export async function getRoomOfUser(req: AuthenticatedRequest, res: Response) {
   const { userId } = req;
   try {
+    const enrollment = await enrollmentsService.getOneWithAddressByUserId(userId);
+    if(!enrollment) throw notFoundError()
     const data = await bookingService.getRoomByUserId(userId);
     if (!data) {
       throw notFoundError();
@@ -14,7 +17,7 @@ export async function getRoomOfUser(req: AuthenticatedRequest, res: Response) {
 
     return res.status(httpStatus.OK).send(data);
   } catch (erro) {
-    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send(erro.message);
+    return res.status(httpStatus.NOT_FOUND).send(erro);
   }
 }
 
@@ -52,6 +55,6 @@ export async function updateRoom(req: AuthenticatedRequest, res: Response) {
 
     return res.status(httpStatus.OK).send(data.id)
   }catch(err){
-    return res.status(404).send(err)
+    return res.status(httpStatus.NOT_FOUND).send(err)
   }
 }
