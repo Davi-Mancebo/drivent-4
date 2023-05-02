@@ -29,8 +29,8 @@ async function createNewBooking(userId: number, roomId: number) {
     ticket.TicketType.isRemote === true ||
     ticket.TicketType.includesHotel === false ||
     ticket.status === 'RESERVED'
-  )
-    return false;
+  ) return false;
+
 
   await bookingRepository.confirmRoom(booking.id, roomId);
 
