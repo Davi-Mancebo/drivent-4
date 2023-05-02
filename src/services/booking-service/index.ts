@@ -5,7 +5,7 @@ import ticketsRepository from '@/repositories/tickets-repository';
 
 async function getRoomByUserId(id: number) {
   const bookingData = await bookingRepository.getBookingByUserId(id);
-  if(!bookingData) throw notFoundError();
+  if(!bookingData.id) throw notFoundError()
   const roomData = await bookingRepository.getRoomByRoomId(bookingData.roomId);
 
   const data = {
@@ -24,7 +24,7 @@ async function createNewBooking(userId: number, roomId: number) {
     return false;
   }
   const room = await bookingRepository.getRoomByRoomId(roomId);
-  if (!room) throw notFoundError();
+  if (!room.id) throw notFoundError();
 
   const roomWithUser = await bookingRepository.getRoomsWithUsersByRoomId(roomId);
   if (roomWithUser[0].id) return false;

@@ -32,7 +32,7 @@ export async function createNewRoom(req: AuthenticatedRequest, res: Response) {
       return res.sendStatus(403);
     }
 
-    return res.status(httpStatus.OK).send({bookingId: data.id});
+    return res.status(httpStatus.OK).send({bookingId: data});
   } catch (err) {
     return res.status(500).send(err.message);
   }
